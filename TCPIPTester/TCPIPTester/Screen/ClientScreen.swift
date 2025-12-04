@@ -33,6 +33,9 @@ struct ClientScreen: View {
     
     @State
     private var stateListen: Task<Void, Never>? = nil
+    
+    @AppStorage(URI.key)
+    private var uri: URI = URI.empty
 
     private func connect() {
         let port: UInt16 = UInt16(port) ?? 4400
@@ -108,6 +111,11 @@ struct ClientScreen: View {
         appState.screen = .setting
     }
     
+    private func save() {
+        uri.ip = ipAddress
+        uri.port = port
+    }
+    
     var body: some View {
         _ClientScreen(ipAddress: $ipAddress,
                       port: $port,
@@ -117,7 +125,14 @@ struct ClientScreen: View {
                       connect: connect,
                       disconnect: disconnect,
                       send: send,
-                      back: back)
+                      back: back,
+                      save: save)
+        .onAppear {
+            if (uri != URI.empty) {
+                ipAddress = uri.ip
+                port = uri.port
+            }
+        }
     }
 }
 

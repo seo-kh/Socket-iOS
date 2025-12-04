@@ -30,6 +30,8 @@ extension ClientScreen {
         
         let back: () -> Void
         
+        let save: () -> Void
+        
         private var readyToConnect: Bool {
             !ipAddress.isEmpty && !port.isEmpty
         }
@@ -65,6 +67,12 @@ extension ClientScreen {
                             TextField("IP address", text: $ipAddress)
                                 .foregroundStyle(.black)
                                 .textFieldStyle(.roundedBorder)
+                            
+                            Button("IP/Port Save") {
+                                save()
+                            }
+                            .buttonStyle(TCPIPButtonStyle(size: 12, disabled: !readyToConnect))
+                            .disabled(!readyToConnect)
                         }
                         
                         GridRow {
@@ -91,6 +99,11 @@ extension ClientScreen {
                             TextField("type your message here..", text: $message)
                                 .foregroundStyle(.black)
                                 .textFieldStyle(.roundedBorder)
+                                .onSubmit {
+                                    if (isConnected && isSendable) {
+                                        send()
+                                    }
+                                }
                             
                             Button("send") {
                                 send()
@@ -131,7 +144,9 @@ extension ClientScreen {
                                isConnected: false,
                                connect: {},
                                disconnect: {},
-                               send: {}, back: {})
+                               send: {},
+                               back: {},
+                               save: {})
     .frame(minWidth: 600, minHeight: 450)
 }
 
@@ -143,7 +158,9 @@ extension ClientScreen {
                                isConnected: false,
                                connect: {},
                                disconnect: {},
-                               send: {}, back: {})
+                               send: {},
+                               back: {},
+                               save: {})
     .frame(minWidth: 600, minHeight: 450)
 }
 
@@ -155,7 +172,9 @@ extension ClientScreen {
                                isConnected: true,
                                connect: {},
                                disconnect: {},
-                               send: {}, back: {})
+                               send: {},
+                               back: {},
+                               save: {})
     .frame(minWidth: 600, minHeight: 450)
 }
 
@@ -167,7 +186,9 @@ extension ClientScreen {
                                isConnected: true,
                                connect: {},
                                disconnect: {},
-                               send: {}, back: {})
+                               send: {},
+                               back: {},
+                               save: {})
     .frame(minWidth: 600, minHeight: 450)
 }
 
@@ -182,6 +203,8 @@ extension ClientScreen {
                                isConnected: true,
                                connect: {},
                                disconnect: {},
-                               send: {}, back: {})
+                               send: {},
+                               back: {},
+                               save: {})
     .frame(minWidth: 600, minHeight: 450)
 }
