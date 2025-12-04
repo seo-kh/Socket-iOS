@@ -71,8 +71,7 @@ extension ClientScreen {
                             Button("IP/Port Save") {
                                 save()
                             }
-                            .buttonStyle(TCPIPButtonStyle(size: 12, disabled: !readyToConnect))
-                            .disabled(!readyToConnect)
+                            .buttonStyle(TCPIPButtonStyle(size: 12, disabled: false))
                         }
                         
                         GridRow {
@@ -81,6 +80,13 @@ extension ClientScreen {
                             TextField("Port number", text: $port)
                                 .foregroundStyle(.black)
                                 .textFieldStyle(.roundedBorder)
+                                .onSubmit {
+                                    if (isConnected) {
+                                        disconnect()
+                                    } else {
+                                        connect()
+                                    }
+                                }
                             
                             Button(isConnected ? "Disconnect" : "Connect") {
                                 if (isConnected) {

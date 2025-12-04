@@ -89,6 +89,8 @@ struct ClientScreen: View {
         Task {
             do {
                 try await self.client?.send(data: data)
+                newLog("request - \(message)")
+                
                 guard let (data, _, _) = try await self.client?.receive() else {
                     self.logs.append(Log(id: self.logs.count + 1, role: .client, message: "connection has been cancelled."))
                     return
@@ -100,9 +102,9 @@ struct ClientScreen: View {
                     return
                 }
                 
-                self.logs.append(Log(id: self.logs.count + 1, role: .server, message: "response - \(response)"))
+                newLog(role: .server, "response - \(response)")
             } catch {
-                print("communicate fail: \(error)")
+                newLog("send message failed.. \(error)")
             }
         }
     }
